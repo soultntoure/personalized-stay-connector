@@ -1,0 +1,41 @@
+version: '3.8'
+
+services:
+  backend:
+    build: ./backend
+    container_name: backend_service
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
+    environment:
+      - NODE_ENV=development
+      # Add database connection string here or in .env file
+
+  frontend:
+    build: ./frontend
+    container_name: frontend_app
+    ports:
+      - "3001:3000" # React dev server default
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    depends_on:
+      - backend
+
+  # Add PostgreSQL service if needed for local development
+  # db:
+  #   image: postgres:13
+  #   container_name: postgres_db
+  #   environment:
+  #     POSTGRES_USER: user
+  #     POSTGRES_PASSWORD: password
+  #     POSTGRES_DB: staysdb
+  #   ports:
+  #     - "5432:5432"
+  #   volumes:
+  #     - postgres_data:/var/lib/postgresql/data/
+
+# volumes:
+#   postgres_data:
